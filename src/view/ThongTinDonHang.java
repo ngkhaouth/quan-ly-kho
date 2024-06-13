@@ -9,19 +9,29 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import controller.ThongTinDonHangController;
+import model.ChiTietDonHang;
+
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class ThongTinDonHang extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
+	private int orderId;
+	private ThongTinDonHangController thongTinCon = new ThongTinDonHangController();
+	private DefaultTableModel modelSanPham;
 
 	/**
 	 * Launch the application.
@@ -30,8 +40,8 @@ public class ThongTinDonHang extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ThongTinDonHang frame = new ThongTinDonHang();
-					frame.setVisible(true);
+//					ThongTinDonHang frame = new ThongTinDonHang();
+//					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,7 +52,8 @@ public class ThongTinDonHang extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ThongTinDonHang() {
+	public ThongTinDonHang(int orderId) {
+		this.orderId = orderId;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 344);
 		contentPane = new JPanel();
@@ -62,13 +73,15 @@ public class ThongTinDonHang extends JFrame {
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		DefaultTableModel modelSanPham = new DefaultTableModel();
-		modelSanPham.addColumn("Mã HD");
+		modelSanPham = new DefaultTableModel();
+//		modelSanPham.addColumn("Mã HD");
 		modelSanPham.addColumn("Mã SP");
 		modelSanPham.addColumn("Tên SP");
 		modelSanPham.addColumn("Số Lượng");
 		modelSanPham.addColumn("Đơn Giá");
 		table = new JTable(modelSanPham);
+		
+		loadDataToTableThongTinDH();
 
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
         headerRenderer.setBackground(new Color(208, 215, 208)); // Màu sắc được chỉ định bằng mã màu RGB
@@ -89,5 +102,28 @@ public class ThongTinDonHang extends JFrame {
 		panel_2.add(btnXacNhan);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
-
+	
+	public void loadDataToTableThongTinDH() {
+		ArrayList<ChiTietDonHang> chiTietDonHangList = thongTinCon.getListChiTietDonHangById(orderId);
+		
+		if(chiTietDonHangList != null) {
+//			ThongTinDonHang ttdh = new ThongTinDonHang(orderId);
+//			modelSanPham.setRowCount(0);
+			
+			for(ChiTietDonHang x : chiTietDonHangList) {
+				String tenSP = thongTinCon.getTenSanPhamById(x.getMaSP());
+				Vector<String> vec = new Vector<String>();
+				vec.add(x.getMaSP() + "");
+				vec.add(tenSP);
+				vec.add(x.getSoLuong() + "");
+				vec.add(x.getDonGia() + "");
+				
+				modelSanPham.addRow(vec);
+			}
+		}else {
+            JOptionPane.showMessageDialog(this, "Không thể tải dữ liệu chi tiết đơn hàng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+	
+	}
+	
 }

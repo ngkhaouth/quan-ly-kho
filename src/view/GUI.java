@@ -36,6 +36,7 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.ScrollPane;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.DonHangController;
@@ -47,12 +48,13 @@ public class GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table;
+	public JTable ordersTable;
 	private JTable table_1;
 	DonHangController dhCon = new DonHangController();
 	TrangThaiDonHangController ttdhCon = new TrangThaiDonHangController();
 	private DefaultTableModel modelHoaDon;
 	private DefaultTableModel modelTinhTrang;
+	public JButton btnTaoDon;
 
 	/**
 	 * Launch the application.
@@ -185,9 +187,11 @@ public class GUI extends JFrame {
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.SOUTH);
 		
-		JButton btnTaoDon = new JButton("Tạo đơn");
+		btnTaoDon = new JButton("Tạo đơn");
+		btnTaoDon.setBackground(new Color(255, 185, 55));
 		panel_3.add(btnTaoDon);
-		btnTaoDon.addActionListener();
+		DonHangController donhangCon = new DonHangController(this);
+		btnTaoDon.addActionListener(donhangCon);
 		
 		modelHoaDon = new DefaultTableModel();
 		modelHoaDon.addColumn("Mã HD");
@@ -196,9 +200,19 @@ public class GUI extends JFrame {
         modelHoaDon.addColumn("Ngày Đặt");
         modelHoaDon.addColumn("Ngày Giao");
 		
-		table = new JTable(modelHoaDon);
+
+		ordersTable = new JTable(modelHoaDon);
+
 		loadDataToTableDonHang();
-		JScrollPane scrollPane = new JScrollPane(table);
+		
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(208, 215, 208)); // Màu sắc được chỉ định bằng mã màu RGB
+        // Duyệt qua từng cột trong bảng và thiết lập renderer cho tiêu đề cột
+        for (int i = 0; i < ordersTable.getColumnCount(); i++) {
+        	ordersTable.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+        
+		JScrollPane scrollPane = new JScrollPane(ordersTable);
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel panel_2 = new JPanel();
@@ -213,7 +227,10 @@ public class GUI extends JFrame {
 		table_1 = new JTable(modelTinhTrang);
 		loadDataToTableTrangThaiDH();
 		
-
+        for (int i = 0; i < table_1.getColumnCount(); i++) {
+        	table_1.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
+		
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
 		panel_2.add(scrollPane_1, BorderLayout.CENTER);
 	}
@@ -247,4 +264,7 @@ public class GUI extends JFrame {
 			}
 		}
 	}
+	
 }
+
+	
