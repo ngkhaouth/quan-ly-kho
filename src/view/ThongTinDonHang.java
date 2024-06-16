@@ -17,10 +17,16 @@ import javax.swing.BoxLayout;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import controller.DonHangController;
 import controller.ThongTinDonHangController;
+import controller.TrangThaiDonHangController;
 import model.ChiTietDonHang;
+import model.TrangThaiDonHang;
 
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -32,6 +38,11 @@ public class ThongTinDonHang extends JFrame {
 	private int orderId;
 	private ThongTinDonHangController thongTinCon = new ThongTinDonHangController();
 	private DefaultTableModel modelSanPham;
+	private JButton btnXacNhan;
+	private TrangThaiDonHangController trangThaiCon = new TrangThaiDonHangController();
+	private TrangThaiDonHangController ttdhCon;
+
+
 
 	/**
 	 * Launch the application.
@@ -52,7 +63,8 @@ public class ThongTinDonHang extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ThongTinDonHang(int orderId) {
+	
+	public ThongTinDonHang(int orderId, GUI gui) {
 		this.orderId = orderId;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 344);
@@ -97,12 +109,23 @@ public class ThongTinDonHang extends JFrame {
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		
-		JButton btnXacNhan = new JButton("Xác nhận tạo đơn");
+		btnXacNhan = new JButton("Xác nhận tạo đơn");
 		btnXacNhan.setBackground(new Color(255, 185, 55));
 		panel_2.add(btnXacNhan);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		btnXacNhan.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				trangThaiCon.addDonHangInListTrangThaiDonHang(orderId);
+				gui.loadDataToTableTrangThaiDH();
+				dispose();
+			}
+
+		});
 	}
-	
 	public void loadDataToTableThongTinDH() {
 		ArrayList<ChiTietDonHang> chiTietDonHangList = thongTinCon.getListChiTietDonHangById(orderId);
 		
@@ -125,5 +148,6 @@ public class ThongTinDonHang extends JFrame {
         }
 	
 	}
+	
 	
 }

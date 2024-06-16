@@ -34,6 +34,10 @@ public class DonHangController implements ActionListener{
 	public ArrayList<DonHang> getListDonHangConTroller(){
 		return dhDAO.getListDonhang();
 	}
+	
+	public DonHang getDonhangByID(int id) {
+		return dhDAO.getDonhangByID(id);
+	}
 
 
 	@Override
@@ -41,9 +45,7 @@ public class DonHangController implements ActionListener{
 		// TODO Auto-generated method stub
 		int selectedRow = gui.ordersTable.getSelectedRow();
         if (selectedRow != -1) {
-        	String orderIdStr = (String) gui.ordersTable.getValueAt(selectedRow, 0);
-        	int orderId = Integer.parseInt(orderIdStr);
-            ttdhview = new ThongTinDonHang(orderId);
+            ttdhview = new ThongTinDonHang(getSelectIdDH(), gui);
             ttdhview.setVisible(true);
         }
         else {
@@ -51,4 +53,19 @@ public class DonHangController implements ActionListener{
         }
 	}
 	
+	
+	public int getSelectIdDH() {
+		int selectedRow = gui.ordersTable.getSelectedRow();
+        if (selectedRow != -1) {
+        	String orderIdStr = (String) gui.ordersTable.getValueAt(selectedRow, 0);
+        	int orderId = Integer.parseInt(orderIdStr);
+        	return orderId;
+        }
+        return -1;
+	}
+	
+	public void loadDataTableTrangThai() {
+		this.gui.loadDataToTableTrangThaiDH();
+	}
 }
+

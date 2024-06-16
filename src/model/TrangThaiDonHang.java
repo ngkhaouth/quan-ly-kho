@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class TrangThaiDonHang {
     private int maDH;
@@ -52,8 +52,8 @@ public class TrangThaiDonHang {
         return ngayDat;
     }
 
-    public void setNgayDat(Date ngayDat) {
-        this.ngayDat = ngayDat;
+    public void setNgayDat(Date date) {
+        this.ngayDat =  date;
     }
 
     public Date getNgayGiao() {

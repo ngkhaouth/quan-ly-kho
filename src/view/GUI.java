@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 	DonHangController dhCon = new DonHangController();
 	TrangThaiDonHangController ttdhCon = new TrangThaiDonHangController();
 	private DefaultTableModel modelHoaDon;
-	private DefaultTableModel modelTinhTrang;
+	public DefaultTableModel modelTinhTrang;
 	public JButton btnTaoDon;
 
 	/**
@@ -252,6 +252,7 @@ public class GUI extends JFrame {
 	}
 
 	public void loadDataToTableTrangThaiDH() {
+		modelTinhTrang.setRowCount(0);
 		ArrayList<TrangThaiDonHang> list = new ArrayList<TrangThaiDonHang>();
 		list = ttdhCon.getListTrangThaiDonHang();
 		if(list != null) {

@@ -11,6 +11,7 @@ public class MyConnect {
 	static final String nameUser = "root";
 	static final String pass = "Nguyenkhao1310";
 
+	
 
 	public boolean openConnectDB() {
 		try {
